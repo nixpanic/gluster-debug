@@ -1,0 +1,20 @@
+#
+# The template xlator does not do any memory allocations. It only passes the
+# FOPs through to the next xlator.
+#
+# For testing, there is no next xlator needed, we are only interested in the
+# resource usage of the Gluster core when gfapi is used.
+#
+volume sink
+    type testing/features/template
+    option is-sink true
+end-volume
+
+#
+# It is possible to test the resource usage of other xlators by adding them in
+# the graph before the "sink".
+#
+#volume mdcache-sink
+#    type performance/md-cache
+#    subvolumes sink
+#end-volume
