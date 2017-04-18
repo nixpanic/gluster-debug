@@ -30,7 +30,7 @@ main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 
-	if (!strcmp(argv[1], "-h") || !strcmp(argv[1], "-h")) {
+	if (!strcmp(argv[1], "-h") || !strcmp(argv[1], "--help")) {
 		usage(stdout);
 		exit(EXIT_SUCCESS);
 	}
