@@ -61,6 +61,19 @@ EOF
 # run through valgrind
 VALGRIND_LOG=$(sed 's,/,_,g' <<< "${XLATOR}").$(date +%s).log
 valgrind --fullpath-after= --leak-check=full --show-leak-kinds=all --log-file=${VALGRIND_LOG} ./gfapi-load-volfile ${TMPFILE}
+RET=${?}
+
+# cleanup the generated .vol file
+rm -f ${TMPFILE}
+
+# post process the valgrind log, strip (random) addresses and counters
+sed -r -i \
+    -e 's/==[0-9]+==/==..==/g' \
+    -e 's/at 0x[A-F0-9]+:/at 0x..+/g' \
+    -e 's/by 0x[A-F0-9]+:/by 0x../g' \
+    -e 's/in loss record [0-9]+ of [0-9]+/in loss record X of Y/g' \
+    -i ${VALGRIND_LOG}
+
 echo "valgrind log saved in ${VALGRIND_LOG}"
 
-rm -f ${TMPFILE}
+exit ${RET}
